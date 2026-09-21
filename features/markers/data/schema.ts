@@ -42,8 +42,5 @@ export async function migrateDbIfNeeded(db: SQLiteDatabase): Promise<void> {
     currentDbVersion = 1;
   }
 
-  // Место для будущих миграций:
-  // if (currentDbVersion === 1) { ... await db.execAsync(...); currentDbVersion = 2; }
-
   await db.execAsync(`PRAGMA user_version = ${CURRENT_VERSION}`);
 }

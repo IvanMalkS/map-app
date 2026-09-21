@@ -9,8 +9,8 @@ import {
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
-import ImageList from '../../components/ImageList';
-import { useDatabase } from '../../contexts/DatabaseContext';
+import ImageList from '../../features/markers/components/ImageList';
+import { useDatabase } from '../../features/markers/data/DatabaseContext';
 import type { Marker, MarkerDetailsParams, MarkerImage } from '../../types';
 
 /**

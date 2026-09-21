@@ -4,13 +4,13 @@ import {
   calculateDistance,
   requestLocationPermissions,
   startLocationUpdates,
-} from '../services/location';
+} from './location';
 import {
   NotificationManager,
   requestNotificationPermissions,
-} from '../services/notifications';
-import { useDatabase } from './DatabaseContext';
-import type { LocationState } from '../types';
+} from '../notifications/notifications';
+import { useDatabase } from '../markers/data/DatabaseContext';
+import type { LocationState } from '../../types';
 
 const PROXIMITY_THRESHOLD_METERS = 100;
 

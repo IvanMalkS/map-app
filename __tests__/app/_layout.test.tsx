@@ -1,9 +1,9 @@
 import React from 'react';
 import { render } from '@testing-library/react-native';
 import RootLayout from '../../app/_layout';
-import { setupGlobalErrorHandlers } from '../../services/errorReporting';
+import { setupGlobalErrorHandlers } from '../../features/shared/services/errorReporting';
 
-jest.mock('../../services/errorReporting', () => ({
+jest.mock('../../features/shared/services/errorReporting', () => ({
   setupGlobalErrorHandlers: jest.fn(),
   reportError: jest.fn(),
   clearError: jest.fn(),
@@ -14,14 +14,14 @@ jest.mock('react-native-safe-area-context', () =>
   require('react-native-safe-area-context/jest/mock').default
 );
 
-jest.mock('../../contexts/DatabaseContext', () => {
+jest.mock('../../features/markers/data/DatabaseContext', () => {
   const { View } = require('react-native');
   return {
     DatabaseProvider: ({ children }: any) => <View>{children}</View>,
   };
 });
 
-jest.mock('../../contexts/LocationContext', () => {
+jest.mock('../../features/location/LocationContext', () => {
   const { View } = require('react-native');
   return {
     LocationProvider: ({ children }: any) => <View>{children}</View>,

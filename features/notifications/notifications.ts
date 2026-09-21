@@ -1,14 +1,19 @@
-import { LogBox, Platform } from 'react-native';
-import type { ActiveNotification, Marker } from '../types';
+import { Platform } from 'react-native';
+import Constants, { ExecutionEnvironment } from 'expo-constants';
+import type { ActiveNotification, Marker } from '../../types';
 import type * as NotificationsModule from 'expo-notifications';
 
 type NotificationsApi = typeof NotificationsModule;
 
-LogBox.ignoreLogs(['expo-notifications: Android Push notifications']);
+function isUnsupportedEnvironment(): boolean {
+  return Platform.OS === 'android' &&
+    Constants.executionEnvironment === ExecutionEnvironment.StoreClient;
+}
 
 let notificationsApi: NotificationsApi | null | undefined;
 
 function getNotificationsApi(): NotificationsApi | null {
+  if (isUnsupportedEnvironment()) return null;
   if (notificationsApi !== undefined) {
     return notificationsApi;
   }
@@ -42,6 +47,7 @@ function getNotificationsApi(): NotificationsApi | null {
  *   недоступны в текущем окружении (например, Expo Go на Android)
  */
 export async function requestNotificationPermissions(): Promise<void> {
+  if (isUnsupportedEnvironment()) return;
   const Notifications = getNotificationsApi();
   if (!Notifications) {
     throw new Error('Уведомления недоступны в этом окружении');

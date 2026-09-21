@@ -3,6 +3,13 @@ const mockSetNotificationChannelAsync = jest.fn();
 const mockScheduleNotificationAsync = jest.fn();
 const mockCancelScheduledNotificationAsync = jest.fn();
 const mockSetNotificationHandler = jest.fn();
+const mockConstants = { executionEnvironment: 'bare' };
+
+jest.mock('expo-constants', () => ({
+  __esModule: true,
+  default: mockConstants,
+  ExecutionEnvironment: { StoreClient: 'storeClient' },
+}));
 
 jest.mock('expo-notifications', () => ({
   AndroidImportance: { DEFAULT: 3 },
@@ -19,8 +26,20 @@ describe('services/notifications', () => {
   const originalOS = require('react-native').Platform.OS;
 
   afterEach(() => {
+    mockConstants.executionEnvironment = 'bare';
     require('react-native').Platform.OS = originalOS;
     jest.clearAllMocks();
+  });
+
+  it('не загружает API уведомлений в Android Expo Go', async () => {
+    require('react-native').Platform.OS = 'android';
+    mockConstants.executionEnvironment = 'storeClient';
+    const { requestNotificationPermissions, NotificationManager } = require('../notifications');
+    await requestNotificationPermissions();
+    await new NotificationManager().showNotification({ id: 1, latitude: 1, longitude: 2, createdAt: 'now' });
+    expect(mockSetNotificationHandler).not.toHaveBeenCalled();
+    expect(mockRequestPermissionsAsync).not.toHaveBeenCalled();
+    expect(mockScheduleNotificationAsync).not.toHaveBeenCalled();
   });
 
   it('не обращается к expo-notifications сразу при загрузке модуля (ленивая загрузка)', () => {

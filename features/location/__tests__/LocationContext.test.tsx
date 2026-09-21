@@ -2,25 +2,25 @@ import React from 'react';
 import { Text } from 'react-native';
 import { act, create } from 'react-test-renderer';
 import { LocationProvider, useLocationContext } from '../LocationContext';
-import { useDatabase } from '../DatabaseContext';
+import { useDatabase } from '../../markers/data/DatabaseContext';
 import {
   calculateDistance,
   requestLocationPermissions,
   startLocationUpdates,
-} from '../../services/location';
-import { NotificationManager, requestNotificationPermissions } from '../../services/notifications';
+} from '../location';
+import { NotificationManager, requestNotificationPermissions } from '../../notifications/notifications';
 
-jest.mock('../DatabaseContext', () => ({
+jest.mock('../../markers/data/DatabaseContext', () => ({
   useDatabase: jest.fn(),
 }));
 
-jest.mock('../../services/location', () => ({
+jest.mock('../location', () => ({
   calculateDistance: jest.fn(),
   requestLocationPermissions: jest.fn(),
   startLocationUpdates: jest.fn(),
 }));
 
-jest.mock('../../services/notifications', () => {
+jest.mock('../../notifications/notifications', () => {
   const showNotification = jest.fn().mockResolvedValue(undefined);
   const removeNotification = jest.fn().mockResolvedValue(undefined);
   const removeAll = jest.fn().mockResolvedValue(undefined);

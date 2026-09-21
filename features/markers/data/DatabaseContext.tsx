@@ -1,9 +1,9 @@
 import React, { createContext, useCallback, useContext, useMemo, useState } from 'react';
 import { SQLiteProvider, useSQLiteContext } from 'expo-sqlite';
 import { Text, View } from 'react-native';
-import { DATABASE_NAME, migrateDbIfNeeded } from '../database/schema';
-import * as ops from '../database/operations';
-import type { Marker, MarkerImage } from '../types';
+import { DATABASE_NAME, migrateDbIfNeeded } from './schema';
+import * as ops from './repository';
+import type { Marker, MarkerImage } from '../../../types';
 
 interface DatabaseContextType {
   addMarker: (latitude: number, longitude: number) => Promise<number>;
@@ -51,19 +51,19 @@ function DatabaseOperationsProvider({ children }: { children: React.ReactNode })
   const contextValue = useMemo<DatabaseContextType>(
     () => ({
       addMarker: (latitude, longitude) =>
-        withErrorHandling(() => ops.addMarker(db, latitude, longitude), -1, 'addMarker'),
+        withErrorHandling(async () => ops.addMarker(db, latitude, longitude), -1, 'addMarker'),
       deleteMarker: (id) =>
-        withErrorHandling(() => ops.deleteMarker(db, id), undefined, 'deleteMarker'),
-      getMarkers: () => withErrorHandling(() => ops.getMarkers(db), [], 'getMarkers'),
-      getMarker: (id) => withErrorHandling(() => ops.getMarker(db, id), null, 'getMarker'),
+        withErrorHandling(async () => ops.deleteMarker(db, id), undefined, 'deleteMarker'),
+      getMarkers: () => withErrorHandling(async () => ops.getMarkers(db), [], 'getMarkers'),
+      getMarker: (id) => withErrorHandling(async () => ops.getMarker(db, id), null, 'getMarker'),
       addImage: (markerId, uri) =>
         withErrorHandling(async () => {
-          await ops.addImage(db, markerId, uri);
+          ops.addImage(db, markerId, uri);
         }, undefined, 'addImage'),
       deleteImage: (id) =>
-        withErrorHandling(() => ops.deleteImage(db, id), undefined, 'deleteImage'),
+        withErrorHandling(async () => ops.deleteImage(db, id), undefined, 'deleteImage'),
       getMarkerImages: (markerId) =>
-        withErrorHandling(() => ops.getMarkerImages(db, markerId), [], 'getMarkerImages'),
+        withErrorHandling(async () => ops.getMarkerImages(db, markerId), [], 'getMarkerImages'),
       isLoading: false,
       error,
     }),

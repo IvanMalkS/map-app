@@ -2,7 +2,7 @@ import React from 'react';
 import { Text } from 'react-native';
 import { act, create, type ReactTestInstance } from 'react-test-renderer';
 import { DatabaseProvider, useDatabase } from '../DatabaseContext';
-import * as ops from '../../database/operations';
+import * as ops from '../repository';
 
 const mockDb = { fake: 'db' };
 let onInitHandler: ((db: unknown) => Promise<void>) | undefined;
@@ -17,12 +17,12 @@ jest.mock('expo-sqlite', () => ({
   useSQLiteContext: () => mockDb,
 }));
 
-jest.mock('../../database/schema', () => ({
+jest.mock('../schema', () => ({
   DATABASE_NAME: 'markers.db',
   migrateDbIfNeeded: jest.fn(),
 }));
 
-jest.mock('../../database/operations');
+jest.mock('../repository');
 
 function Probe({ onReady }: { onReady: (value: ReturnType<typeof useDatabase>) => void }) {
   const value = useDatabase();

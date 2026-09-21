@@ -2,7 +2,7 @@ import React from 'react';
 import { Alert } from 'react-native';
 import { render, act, screen, fireEvent } from '@testing-library/react-native';
 import MarkerDetailsScreen from '../../../app/marker/[id]';
-import { useDatabase } from '../../../contexts/DatabaseContext';
+import { useDatabase } from '../../../features/markers/data/DatabaseContext';
 import * as ImagePicker from 'expo-image-picker';
 
 const mockBack = jest.fn();
@@ -21,7 +21,7 @@ jest.mock('expo-router', () => ({
   },
 }));
 
-jest.mock('../../../contexts/DatabaseContext', () => ({
+jest.mock('../../../features/markers/data/DatabaseContext', () => ({
   useDatabase: jest.fn(),
 }));
 

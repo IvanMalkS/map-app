@@ -1,10 +1,10 @@
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { ErrorBanner } from '../components/ErrorBanner';
-import { GlobalErrorBoundary } from '../components/GlobalErrorBoundary';
-import { DatabaseProvider } from '../contexts/DatabaseContext';
-import { LocationProvider } from '../contexts/LocationContext';
-import { setupGlobalErrorHandlers } from '../services/errorReporting';
+import { ErrorBanner } from '../features/shared/components/ErrorBanner';
+import { GlobalErrorBoundary } from '../features/shared/components/GlobalErrorBoundary';
+import { DatabaseProvider } from '../features/markers/data/DatabaseContext';
+import { LocationProvider } from '../features/location/LocationContext';
+import { setupGlobalErrorHandlers } from '../features/shared/services/errorReporting';
 
 // Перехватывает необработанные JS-исключения и отклонённые промисы за
 // пределами дерева React — устанавливается один раз при загрузке модуля.

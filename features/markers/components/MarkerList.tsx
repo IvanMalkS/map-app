@@ -1,6 +1,6 @@
 import React from 'react';
 import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
-import type { Marker } from '../types';
+import type { Marker } from '../../../types';
 
 interface MarkerListProps {
   markers: Marker[];

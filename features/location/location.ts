@@ -1,5 +1,5 @@
 import * as Location from 'expo-location';
-import type { LocationConfig } from '../types';
+import type { LocationConfig } from '../../types';
 
 /** Конфигурация подписки на обновления геолокации, используемая по умолчанию. */
 export const DEFAULT_LOCATION_CONFIG: LocationConfig = {

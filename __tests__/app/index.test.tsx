@@ -2,8 +2,8 @@ import React from 'react';
 import { Alert } from 'react-native';
 import { render, act, screen } from '@testing-library/react-native';
 import MapScreen from '../../app/index';
-import { useDatabase } from '../../contexts/DatabaseContext';
-import { useLocationContext } from '../../contexts/LocationContext';
+import { useDatabase } from '../../features/markers/data/DatabaseContext';
+import { useLocationContext } from '../../features/location/LocationContext';
 
 const mockPush = jest.fn();
 let focusEffectCallback: (() => void | (() => void)) | undefined;
@@ -15,15 +15,15 @@ jest.mock('expo-router', () => ({
   },
 }));
 
-jest.mock('../../contexts/DatabaseContext', () => ({
+jest.mock('../../features/markers/data/DatabaseContext', () => ({
   useDatabase: jest.fn(),
 }));
 
-jest.mock('../../contexts/LocationContext', () => ({
+jest.mock('../../features/location/LocationContext', () => ({
   useLocationContext: jest.fn(),
 }));
 
-jest.mock('../../components/Map', () => {
+jest.mock('../../features/map/components/Map', () => {
   const { View } = require('react-native');
   return function MockMap(props: any) {
     (global as any).__mapProps = props;
@@ -31,7 +31,7 @@ jest.mock('../../components/Map', () => {
   };
 });
 
-jest.mock('../../components/MarkerList', () => {
+jest.mock('../../features/markers/components/MarkerList', () => {
   const { View } = require('react-native');
   return function MockMarkerList(props: any) {
     (global as any).__markerListProps = props;

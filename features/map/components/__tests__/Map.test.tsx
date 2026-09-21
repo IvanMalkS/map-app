@@ -4,6 +4,17 @@ import Map from '../Map';
 
 let mockCapturedMapViewProps: any;
 let mockCapturedMarkerProps: any[];
+let mockCapturedWebViewProps: any;
+
+jest.mock('react-native-webview', () => {
+  const { View } = require('react-native');
+  return {
+    WebView: (props: any) => {
+      mockCapturedWebViewProps = props;
+      return <View testID="mock-web-view" />;
+    },
+  };
+});
 
 jest.mock('react-native-maps', () => {
   const { View } = require('react-native');
@@ -25,13 +36,17 @@ jest.mock('react-native-maps', () => {
 });
 
 describe('components/Map', () => {
+  const originalOS = require('react-native').Platform.OS;
+
   beforeEach(() => {
     jest.useFakeTimers();
     mockCapturedMapViewProps = undefined;
     mockCapturedMarkerProps = [];
+    mockCapturedWebViewProps = undefined;
   });
 
   afterEach(() => {
+    require('react-native').Platform.OS = originalOS;
     jest.useRealTimers();
   });
 
@@ -106,5 +121,25 @@ describe('components/Map', () => {
     render(<Map markers={[]} onLongPress={jest.fn()} onMarkerPress={jest.fn()} />);
 
     expect(screen.getByText('Долгое нажатие — добавить метку')).toBeTruthy();
+  });
+
+  it('на Android использует OpenStreetMap и передаёт события из WebView', () => {
+    require('react-native').Platform.OS = 'android';
+    const onLongPress = jest.fn();
+    const onMarkerPress = jest.fn();
+    render(<Map markers={markers} onLongPress={onLongPress} onMarkerPress={onMarkerPress} />);
+
+    expect(mockCapturedWebViewProps.source.html).toContain('tile.openstreetmap.org');
+
+    act(() => {
+      mockCapturedWebViewProps.onMessage({ nativeEvent: { data: '{"type":"ready"}' } });
+      mockCapturedWebViewProps.onMessage({
+        nativeEvent: { data: '{"type":"long-press","latitude":1.5,"longitude":2.5}' },
+      });
+      mockCapturedWebViewProps.onMessage({ nativeEvent: { data: '{"type":"marker-press","id":2}' } });
+    });
+
+    expect(onLongPress).toHaveBeenCalledWith(1.5, 2.5);
+    expect(onMarkerPress).toHaveBeenCalledWith(2);
   });
 });

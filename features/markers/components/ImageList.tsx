@@ -1,6 +1,6 @@
 import React from 'react';
 import { FlatList, Image, Pressable, StyleSheet, Text, View } from 'react-native';
-import type { MarkerImage } from '../types';
+import type { MarkerImage } from '../../../types';
 
 interface ImageListProps {
   images: MarkerImage[];

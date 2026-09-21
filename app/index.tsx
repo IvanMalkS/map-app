@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
 import { useFocusEffect, useRouter } from 'expo-router';
-import Map from '../components/Map';
-import MarkerList from '../components/MarkerList';
-import { useDatabase } from '../contexts/DatabaseContext';
-import { useLocationContext } from '../contexts/LocationContext';
+import Map from '../features/map/components/Map';
+import MarkerList from '../features/markers/components/MarkerList';
+import { useDatabase } from '../features/markers/data/DatabaseContext';
+import { useLocationContext } from '../features/location/LocationContext';
 import type { Marker } from '../types';
 
 /**
