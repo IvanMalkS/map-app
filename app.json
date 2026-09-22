@@ -12,7 +12,8 @@
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "Приложению нужен доступ к геолокации, чтобы показывать ваше текущее местоположение на карте и уведомлять о приближении к сохранённым меткам.",
         "NSPhotoLibraryUsageDescription": "Приложению нужен доступ к галерее, чтобы прикреплять изображения к меткам на карте."
-      }
+      },
+      "bundleIdentifier": "com.anonymous.map-app"
     },
     "android": {
       "adaptiveIcon": {
@@ -23,9 +24,12 @@
       },
       "predictiveBackGestureEnabled": false,
       "permissions": [
-        "ACCESS_COARSE_LOCATION",
-        "ACCESS_FINE_LOCATION",
-        "READ_MEDIA_IMAGES"
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.READ_MEDIA_IMAGES",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.RECORD_AUDIO"
       ]
     },
     "web": {

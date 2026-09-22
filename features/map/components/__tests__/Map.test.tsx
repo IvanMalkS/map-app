@@ -123,6 +123,13 @@ describe('components/Map', () => {
     expect(screen.getByText('Долгое нажатие — добавить метку')).toBeTruthy();
   });
 
+  it('показывает кнопки управления масштабом на iOS', () => {
+    render(<Map markers={[]} onLongPress={jest.fn()} onMarkerPress={jest.fn()} />);
+
+    expect(screen.getByLabelText('Приблизить карту')).toBeTruthy();
+    expect(screen.getByLabelText('Отдалить карту')).toBeTruthy();
+  });
+
   it('на Android использует OpenStreetMap и передаёт события из WebView', () => {
     require('react-native').Platform.OS = 'android';
     const onLongPress = jest.fn();
